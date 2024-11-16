@@ -2,7 +2,7 @@ using Oqtane.Models;
 
 namespace Oqtane.Infrastructure
 {
-    [SiteMigration("localhost:44357", "01.00.00")]
+    [SiteMigration("localhost:44358", "01.00.00")]
     public class ExampleSiteMigration : ISiteMigration
     {
         void ISiteMigration.Up(Site site, Alias alias)
