@@ -21,6 +21,10 @@ namespace Oqtane.Themes.Controls
         [Inject] public IJSRuntime jsRuntime { get; set; }
         [Inject] public IServiceProvider ServiceProvider { get; set; }
 
+        //Capability to add custom ReturnUrl Per Theme
+        [Parameter]
+        public string ReturnUrl { get; set; }
+
         private bool allowexternallogin;
         private bool allowsitelogin;
         protected string loginurl;
@@ -43,8 +47,13 @@ namespace Oqtane.Themes.Controls
                 // local login
                 loginurl = NavigateUrl("login");
             }
-
-            if (!PageState.QueryString.ContainsKey("returnurl"))
+            if (!String.IsNullOrEmpty(ReturnUrl) && !PageState.QueryString.ContainsKey("returnurl"))
+            {
+                //Apply the configured Return Url
+                //Since with base url Path could be empty "/" so we only need to add the name
+                loginurl += "?returnurl=" + WebUtility.UrlEncode(ReturnUrl);
+            }
+            else if (!PageState.QueryString.ContainsKey("returnurl"))
             {
                 // remember current url
                 loginurl += "?returnurl=" + WebUtility.UrlEncode(PageState.Route.PathAndQuery);
