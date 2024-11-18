@@ -43,6 +43,20 @@ namespace Oqtane.Controllers
             _logger = logger;
         }
 
+        [HttpGet("usersby/{clinicId}")]
+        [Authorize]
+        public List<User> Get(int clinicId, int groupBusinessId)
+        {
+
+            List<User> allUsers = new List<User>();
+            var users = _userManager.GetUsers(clinicId, groupBusinessId).ToList();
+            foreach (User user in users)
+            {
+                allUsers.Add(Filter(user));
+            }
+            return allUsers;
+        }
+
         // GET api/<controller>/5?siteid=x
         [HttpGet("{id}")]
         [Authorize]
@@ -169,7 +183,8 @@ namespace Oqtane.Controllers
         [HttpPost]
         public async Task<User> Post([FromBody] User user)
         {
-            if (ModelState.IsValid && user.SiteId == _tenantManager.GetAlias().SiteId)
+            //We have changed the code to allow users from Site1 to create users for Site2
+            if (ModelState.IsValid && (user.SiteId == _tenantManager.GetAlias().SiteId || user.SiteId == 2 && _tenantManager.GetAlias().SiteId == 1))
             {
                 bool allowregistration;
                 if (_userPermissions.IsAuthorized(User, user.SiteId, EntityNames.User, -1, PermissionNames.Write, RoleNames.Admin))

@@ -30,8 +30,8 @@ namespace Oqtane.Migrations.EntityBuilders
             LastLoginOn = AddDateTimeColumn(table,"LastLoginOn", true);
             LastIPAddress = AddStringColumn(table,"LastIpAddress", 50);
 
-            DefaultClinicId = AddIntegerColumn(table, "DefaultClinicId", true);
-            DefaultGroupBusinessId = AddIntegerColumn(table, "DefaultGroupBusinessId", true);
+            DefaultClinicId = AddIntegerColumn(table, "DefaultClinicId",false, 0);
+            DefaultGroupBusinessId = AddIntegerColumn(table, "DefaultGroupBusinessId",false, 0);
 
             AddAuditableColumns(table);
             AddDeletableColumns(table);

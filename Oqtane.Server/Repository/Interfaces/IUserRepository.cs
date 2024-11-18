@@ -5,7 +5,7 @@ namespace Oqtane.Repository
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetUsers();
+        IEnumerable<User> GetUsers(int clinicId, int groupBusinessId);       
         User AddUser(User user);
         User UpdateUser(User user);
         User GetUser(int userId);

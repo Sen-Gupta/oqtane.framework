@@ -52,7 +52,11 @@ namespace Oqtane.Managers
             _cache = cache;
             _localizer = localizer;
         }
-
+       
+        public IEnumerable<User> GetUsers(int clinicId, int groupBusinessId)
+        {
+            return _users.GetUsers(clinicId, groupBusinessId);
+        }
         public User GetUser(int userid, int siteid)
         {
             var alias = _tenantManager.GetAlias();
