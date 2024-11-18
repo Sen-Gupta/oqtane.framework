@@ -21,49 +21,6 @@ namespace Oqtane.Repository
             _userroles = userroles;
         }
 
-        public IEnumerable<User> GetUsers(int clinicId, int groupBusinessId)
-        {
-            //Hard Coded SiteId
-            int siteId = 2; //We need to get all Users of Site 2 only
-            if (clinicId == 0 && groupBusinessId == 0)
-            {
-                // We are CSDP Admin, We can see all logins
-                using var db = _dbContextFactory.CreateDbContext();
-                return db.UserRole
-                    .Include(item => item.Role) // eager load roles
-                    .Include(item => item.User) // eager load users
-                    .Where(item => item.Role.SiteId == siteId).Select(x => x.User).ToList();
-            }
-            else if (clinicId > 1 && groupBusinessId ==  0) //We just need to filter at clinic level
-            {
-                using var db = _dbContextFactory.CreateDbContext();
-                return db.UserRole
-                    .Include(item => item.Role) // eager load roles
-                    .Include(item => item.User) // eager load users
-                    .Where(item => item.Role.SiteId == siteId && item.User.DefaultClinicId == clinicId).Select(x => x.User).ToList();
-            }
-            else if (groupBusinessId > 1 && clinicId == 0) // We just need to filter at 
-            {
-                using var db = _dbContextFactory.CreateDbContext();
-                return db.UserRole
-                    .Include(item => item.Role) // eager load roles
-                    .Include(item => item.User) // eager load users
-                    .Where(item => item.Role.SiteId == siteId && item.User.DefaultGroupBusinessId == groupBusinessId).Select(x => x.User).ToList();
-            }
-            else if (groupBusinessId > 0 &&  clinicId > 0)
-            {
-                using var db = _dbContextFactory.CreateDbContext();
-                return db.UserRole
-                     .Include(item => item.Role) // eager load roles
-                     .Include(item => item.User) // eager load users
-                     .Where(item => item.Role.SiteId == siteId && item.User.DefaultGroupBusinessId == groupBusinessId && item.User.DefaultClinicId == clinicId).Select(x => x.User).ToList();
-            }
-            else
-            {
-                return new List<User>();
-            }
-        }
-
         public User AddUser(User user)
         {
             using var db = _dbContextFactory.CreateDbContext();

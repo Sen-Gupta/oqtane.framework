@@ -14,6 +14,10 @@ namespace Oqtane.Services
 
         private string Apiurl => CreateApiUrl("UserRole");
 
+        public async Task<List<UserRole>> GetUsersAsync(int clinicId, int groupBusinessId)
+        {
+            return await GetJsonAsync<List<UserRole>>($"{Apiurl}/usersby/{clinicId}?groupbusinessid={groupBusinessId}");
+        }
         public async Task<List<UserRole>> GetUserRolesAsync(int siteId)
         {
             return await GetUserRolesAsync(siteId, -1, "");

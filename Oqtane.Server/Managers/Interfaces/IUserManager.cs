@@ -6,7 +6,6 @@ namespace Oqtane.Managers
 {
     public interface IUserManager
     {
-        IEnumerable<User> GetUsers(int clinicId, int groupBusinessId);
         User GetUser(int userid, int siteid);
         User GetUser(string username, int siteid);
         User GetUser(string username, string email, int siteid);

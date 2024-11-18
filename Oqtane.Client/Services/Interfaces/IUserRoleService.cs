@@ -10,6 +10,15 @@ namespace Oqtane.Services
     public interface IUserRoleService
     {
         /// <summary>
+        /// Get all User Roles for Site 2 <see cref="UserRole"/>
+        /// </summary>
+        /// <param name="clinicId">ID of a Clinic</param>
+        /// <param name="groupBusinessId">ID of a GroupBusiness</param>
+        /// <returns></returns>
+        Task<List<UserRole>> GetUsersAsync(int clinicId, int groupBusinessId);
+
+
+        /// <summary>
         /// Get all <see cref="UserRole"/>s on a <see cref="Site"/>
         /// </summary>
         /// <param name="siteId">ID-reference to a <see cref="Site"/></param>

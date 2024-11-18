@@ -12,14 +12,6 @@ namespace Oqtane.Services
         /// <summary>
         /// Get a <see cref="User"/> of a specific site
         /// </summary>
-        /// <param name="clinicId">ID of a Clinic</param>
-        /// <param name="groupBusinessId">ID of a GroupBusiness</param>
-        /// <returns></returns>
-        Task<List<User>> GetUsersAsync(int clinicId, int groupBusinessId);
-
-        /// <summary>
-        /// Get a <see cref="User"/> of a specific site
-        /// </summary>
         /// <param name="userId">ID of a <see cref="User"/></param>
         /// <param name="siteId">ID of a <see cref="Site"/></param>
         /// <returns></returns>

@@ -43,20 +43,6 @@ namespace Oqtane.Controllers
             _logger = logger;
         }
 
-        [HttpGet("usersby/{clinicId}")]
-        [Authorize]
-        public List<User> Get(int clinicId, int groupBusinessId)
-        {
-
-            List<User> allUsers = new List<User>();
-            var users = _userManager.GetUsers(clinicId, groupBusinessId).ToList();
-            foreach (User user in users)
-            {
-                allUsers.Add(Filter(user));
-            }
-            return allUsers;
-        }
-
         // GET api/<controller>/5?siteid=x
         [HttpGet("{id}")]
         [Authorize]

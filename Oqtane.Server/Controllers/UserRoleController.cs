@@ -34,6 +34,14 @@ namespace Oqtane.Controllers
             _alias = tenantManager.GetAlias();
         }
 
+
+        [HttpGet("usersby/{clinicId}")]
+        [Authorize(Roles = RoleNames.Registered)]
+        public List<UserRole> Get(int clinicId, int groupBusinessId)
+        {
+            return _userRoles.GetUsers(clinicId, groupBusinessId).ToList();
+        }
+
         // GET: api/<controller>?siteid=x&userid=y&rolename=z
         [HttpGet]
         [Authorize(Roles = RoleNames.Registered)]
@@ -66,7 +74,7 @@ namespace Oqtane.Controllers
                 return null;
             }
         }
-        
+
         // GET api/<controller>/5
         [HttpGet("{id}")]
         [Authorize(Roles = RoleNames.Registered)]
