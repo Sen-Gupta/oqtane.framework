@@ -65,6 +65,10 @@ namespace Oqtane.Models
         [NotMapped]
         public string SecurityStamp { get; set; }
 
+        public int? DefaultClinicId { get; set; }
+
+        public int? DefaultGroupBusinessId { get; set; }
+
         /// <summary>
         /// Reference to the <see cref="Site"/> this user belongs to.
         /// </summary>

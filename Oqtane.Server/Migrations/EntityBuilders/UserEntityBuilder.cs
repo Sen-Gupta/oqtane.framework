@@ -30,6 +30,9 @@ namespace Oqtane.Migrations.EntityBuilders
             LastLoginOn = AddDateTimeColumn(table,"LastLoginOn", true);
             LastIPAddress = AddStringColumn(table,"LastIpAddress", 50);
 
+            DefaultClinicId = AddIntegerColumn(table, "DefaultClinicId", true);
+            DefaultGroupBusinessId = AddIntegerColumn(table, "DefaultGroupBusinessId", true);
+
             AddAuditableColumns(table);
             AddDeletableColumns(table);
 
@@ -49,5 +52,18 @@ namespace Oqtane.Migrations.EntityBuilders
         public OperationBuilder<AddColumnOperation> LastLoginOn { get; private set; }
 
         public OperationBuilder<AddColumnOperation> LastIPAddress { get; private set; }
+
+        /** Custom Fields **/
+
+        /// <summary>
+        /// Default ClinicId of the user
+        /// </summary>
+        public OperationBuilder<AddColumnOperation> DefaultClinicId { get; set; }
+
+        /// <summary>
+        /// Default Group BusinessId of the User
+        /// </summary>
+        public OperationBuilder<AddColumnOperation> DefaultGroupBusinessId { get; set; }
+
     }
 }
