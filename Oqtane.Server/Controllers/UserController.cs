@@ -48,7 +48,7 @@ namespace Oqtane.Controllers
         [Authorize]
         public User Get(int id, string siteid)
         {
-            if (int.TryParse(siteid, out int SiteId) && SiteId == _tenantManager.GetAlias().SiteId)
+            if (int.TryParse(siteid, out int SiteId) && (SiteId == _tenantManager.GetAlias().SiteId || SiteId == 2 ))
             {
                 User user = _userManager.GetUser(id, SiteId);
                 if (user == null)
@@ -123,6 +123,9 @@ namespace Oqtane.Controllers
                 filtered.UserId = user.UserId;
                 filtered.Username = user.Username;
                 filtered.DisplayName = user.DisplayName;
+                filtered.Email = user.Email;
+                filtered.DefaultGroupBusinessId = user.DefaultGroupBusinessId;
+                filtered.DefaultClinicId = user.DefaultClinicId;
 
                 // restricted properties
                 filtered.Password = "";
@@ -130,7 +133,8 @@ namespace Oqtane.Controllers
                 filtered.SecurityStamp = "";
 
                 // include private properties if authenticated user is accessing their own user account os is an administrator
-                if (_userPermissions.IsAuthorized(User, user.SiteId, EntityNames.User, -1, PermissionNames.Write, RoleNames.Admin) || _userPermissions.GetUser(User).UserId == user.UserId)
+                if (_userPermissions.IsAuthorized(User, user.SiteId, EntityNames.User, -1, PermissionNames.Write, RoleNames.Admin)
+                    || _userPermissions.GetUser(User).UserId == user.UserId)
                 {
                     filtered.Email = user.Email;
                     filtered.PhotoFileId = user.PhotoFileId;
