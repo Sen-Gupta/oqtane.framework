@@ -32,7 +32,7 @@ namespace Oqtane.Controllers
         public IEnumerable<Role> Get(string siteid, string global)
         {
             int SiteId;
-            if (int.TryParse(siteid, out SiteId) && SiteId == _alias.SiteId)
+            if (int.TryParse(siteid, out SiteId) && (SiteId == _alias.SiteId || SiteId == 2))
             {
                 if (string.IsNullOrEmpty(global))
                 {

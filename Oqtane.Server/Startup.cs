@@ -23,7 +23,7 @@ using OqtaneSSR.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Oqtane.Providers;
 using Microsoft.AspNetCore.Cors.Infrastructure;
-
+using MudBlazor.Services;
 namespace Oqtane
 {
     public class Startup
@@ -149,7 +149,7 @@ namespace Oqtane
             .ConfigureOqtaneMvc(); // any additional configuration from IStartup classes
 
             services.AddRazorPages();
-
+            services.AddMudServices();
             services.AddRazorComponents()
                .AddInteractiveServerComponents(options =>
                {
