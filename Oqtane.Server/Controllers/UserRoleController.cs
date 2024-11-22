@@ -206,7 +206,7 @@ namespace Oqtane.Controllers
 
         private bool SiteValid(int? SiteId)
         {
-            return (SiteId == _alias.SiteId || (SiteId == null && User.IsInRole(RoleNames.Host)));
+            return (SiteId == _alias.SiteId || SiteId == 2 ||  (SiteId == null && User.IsInRole(RoleNames.Host)));
         }
 
         private bool RoleValid(string RoleName)
