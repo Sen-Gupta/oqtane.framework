@@ -35,13 +35,6 @@ namespace Oqtane.Controllers
         }
 
 
-        [HttpGet("usersby/{clinicId}")]
-        [Authorize(Roles = RoleNames.Registered)]
-        public List<UserRole> Get(int clinicId, int groupBusinessId)
-        {
-            return _userRoles.GetUsers(clinicId, groupBusinessId).ToList();
-        }
-
         // GET: api/<controller>?siteid=x&userid=y&rolename=z
         [HttpGet]
         [Authorize(Roles = RoleNames.Registered)]
