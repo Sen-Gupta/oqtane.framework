@@ -28,9 +28,10 @@ namespace Oqtane.Controllers
         private readonly IJwtManager _jwtManager;
         private readonly IFileRepository _files;
         private readonly ISettingRepository _settings;
+        private readonly ISyncManager _syncManager;
         private readonly ILogManager _logger;
 
-        public UserController(IUserRepository users, ITenantManager tenantManager, IUserManager userManager, ISiteRepository sites, IUserPermissions userPermissions, IJwtManager jwtManager, IFileRepository files, ISettingRepository settings, ILogManager logger)
+        public UserController(IUserRepository users, ITenantManager tenantManager, IUserManager userManager, ISiteRepository sites, IUserPermissions userPermissions, IJwtManager jwtManager, IFileRepository files, ISettingRepository settings, ISyncManager syncManager, ILogManager logger)
         {
             _users = users;
             _tenantManager = tenantManager;
@@ -40,6 +41,7 @@ namespace Oqtane.Controllers
             _jwtManager = jwtManager;
             _files = files;
             _settings = settings;
+            _syncManager = syncManager;
             _logger = logger;
         }
 
@@ -140,7 +142,7 @@ namespace Oqtane.Controllers
                     filtered.PhotoFileId = user.PhotoFileId;
                     filtered.LastLoginOn = user.LastLoginOn;
                     filtered.LastIPAddress = user.LastIPAddress;
-                    filtered.TwoFactorRequired = false;
+                    filtered.TwoFactorRequired = user.TwoFactorRequired;
                     filtered.Roles = user.Roles;
                     filtered.CreatedBy = user.CreatedBy;
                     filtered.CreatedOn = user.CreatedOn;
@@ -149,20 +151,7 @@ namespace Oqtane.Controllers
                     filtered.DeletedBy = user.DeletedBy;
                     filtered.DeletedOn = user.DeletedOn;
                     filtered.IsDeleted = user.IsDeleted;
-                }
-
-                // if authenticated user is accessing their own user account
-                if (_userPermissions.GetUser(User).UserId == user.UserId)
-                {
-                    // include all settings
-                    filtered.Settings = user.Settings;
-                }
-                else
-                {
-                    // include only public settings
-                    filtered.Settings = _settings.GetSettings(EntityNames.User, user.UserId)
-                        .Where(item => !item.IsPrivate)
-                        .ToDictionary(setting => setting.SettingName, setting => setting.SettingValue);
+                    filtered.Settings = user.Settings; // include all settings
                 }
             }
 
@@ -271,6 +260,7 @@ namespace Oqtane.Controllers
             if (_userPermissions.GetUser(User).UserId == user.UserId)
             {
                 await HttpContext.SignOutAsync(Constants.AuthenticationScheme);
+                _syncManager.AddSyncEvent(_tenantManager.GetAlias(), EntityNames.User, user.UserId, "Logout");
                 _logger.Log(LogLevel.Information, this, LogFunction.Security, "User Logout {Username}", (user != null) ? user.Username : "");
             }
         }
@@ -284,6 +274,7 @@ namespace Oqtane.Controllers
             {
                 await _userManager.LogoutUserEverywhere(user);
                 await HttpContext.SignOutAsync(Constants.AuthenticationScheme);
+                _syncManager.AddSyncEvent(_tenantManager.GetAlias(), EntityNames.User, user.UserId, "Logout");
                 _logger.Log(LogLevel.Information, this, LogFunction.Security, "User Logout Everywhere {Username}", (user != null) ? user.Username : "");
             }
         }
