@@ -14,7 +14,7 @@ export function onUpdate() {
 
     // iterate over all script elements in page
     const scripts = document.getElementsByTagName("script");
-    for (const script of scripts) {
+    for (const script of Array.from(scripts)) {
         let key = getKey(script);
         let scriptInfo = scriptInfoBySrc.get(key);
         if (!scriptInfo) {
@@ -70,10 +70,10 @@ function replaceScript(script) {
         newScript.onload = () => resolve();
         newScript.onerror = (error) => reject(error);
 
-        // remove existing newScript script
+        // remove existing script
         script.remove();
 
-        // replace with new newScript to force reload in Blazor
+        // replace with new script to force reload in Blazor
         document.head.appendChild(newScript);
     });
 }
