@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Copy and restore all necessary projects and solution files
+# Copy all solution and project files
 COPY Oqtane.Framework/*.sln ./Oqtane.Framework/
 COPY Oqtane.Framework/Oqtane.Server/Oqtane.Server.csproj Oqtane.Framework/Oqtane.Server/
 COPY Oqtane.Framework/Oqtane.Client/Oqtane.Client.csproj Oqtane.Framework/Oqtane.Client/
@@ -22,14 +22,14 @@ COPY csdp/Server/Biote.Module.Csdp.Server.csproj csdp/Server/
 COPY csdp/Client/Biote.Module.Csdp.Client.csproj csdp/Client/
 COPY csdp/Shared/Biote.Module.Csdp.Shared.csproj csdp/Shared/
 
-# Restore dependencies for Oqtane and csdp
+# Restore dependencies for all projects
 RUN dotnet restore Oqtane.Framework/Oqtane.Server/Oqtane.Server.csproj
 RUN dotnet restore csdp/Server/Biote.Module.Csdp.Server.csproj
 
-# Copy everything for the build
+# Copy source code
 COPY . .
 
-# Build all database projects (required for dependencies)
+# Build all database dependencies
 WORKDIR /src/Oqtane.Framework/Oqtane.Database.MySQL
 RUN dotnet build -c $BUILD_CONFIGURATION
 WORKDIR /src/Oqtane.Framework/Oqtane.Database.PostgreSQL
@@ -39,25 +39,28 @@ RUN dotnet build -c $BUILD_CONFIGURATION
 WORKDIR /src/Oqtane.Framework/Oqtane.Database.SqlServer
 RUN dotnet build -c $BUILD_CONFIGURATION
 
-# Build csdp and Oqtane
+# Build csdp submodule
 WORKDIR /src/csdp/Server
-RUN dotnet build Biote.Module.Csdp.Server.csproj -c $BUILD_CONFIGURATION -o /app/oqtane/bin
+RUN dotnet build -c $BUILD_CONFIGURATION
 
-WORKDIR /src/Oqtane.Framework/Oqtane.Server
-RUN dotnet build Oqtane.Server.csproj -c $BUILD_CONFIGURATION -o /app/oqtane
+WORKDIR /src/csdp/Client
+RUN dotnet build -c $BUILD_CONFIGURATION
 
-# Publish stage
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
+WORKDIR /src/csdp/Shared
+RUN dotnet build -c $BUILD_CONFIGURATION
+
+# Publish Oqtane.Server
 WORKDIR /src/Oqtane.Framework/Oqtane.Server
 RUN dotnet publish Oqtane.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Final stage for runtime
+# Publish Biote.Module.Csdp.Server
+WORKDIR /src/csdp/Server
+RUN dotnet publish Biote.Module.Csdp.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Final runtime stage
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 
-# Add check to verify if required files are present in /app/publish/bin
-RUN ls -R /app/publish/bin
-
+# Entrypoint
 ENTRYPOINT ["dotnet", "Oqtane.Server.dll"]
