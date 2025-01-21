@@ -461,6 +461,23 @@ namespace Oqtane.Migrations.EntityBuilders
             }
             _migrationBuilder.Sql(updateSql);
         }
+       
+        #region JSONB Operations
+        /// <summary>
+        /// Adds a JSONB column to the table
+        /// </summary>
+        /// <param name="columnName"></param>
+        /// <param name="nullable"></param>
+        protected OperationBuilder<AddColumnOperation> AddJsonbColumn(ColumnsBuilder table, string name, bool nullable = false)
+        {
+            
+            return table.Column<string>(
+                name: RewriteName(name),
+                type: "jsonb",
+                nullable: nullable // Define whether the column is nullable
+            );
+        }
+        #endregion
     }
 }
 
