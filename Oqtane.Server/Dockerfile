@@ -39,6 +39,15 @@ RUN dotnet build -c $BUILD_CONFIGURATION
 WORKDIR /src/Oqtane.Framework/Oqtane.Database.SqlServer
 RUN dotnet build -c $BUILD_CONFIGURATION
 
+WORKDIR /src/Oqtane.Framework/Oqtane.Shared
+RUN dotnet build -c $BUILD_CONFIGURATION
+
+WORKDIR /src/Oqtane.Framework/Oqtane.Client
+RUN dotnet build -c $BUILD_CONFIGURATION
+
+WORKDIR /src/Oqtane.Framework/Oqtane.Server
+RUN dotnet build -c $BUILD_CONFIGURATION
+
 # Build csdp submodule
 WORKDIR /src/csdp/Server
 RUN dotnet build -c $BUILD_CONFIGURATION
