@@ -48,15 +48,22 @@ RUN dotnet build -c $BUILD_CONFIGURATION
 WORKDIR /src/Oqtane.Framework/Oqtane.Server
 RUN dotnet build -c $BUILD_CONFIGURATION
 
+# Ensure DLLs are available at the referenced HintPath locations
+RUN mkdir -p /src/Oqtane.Framework/Oqtane.Server/bin/Debug/net9.0
+RUN cp /src/Oqtane.Framework/Oqtane.Server/bin/$BUILD_CONFIGURATION/net9.0/Oqtane.Server.dll /src/Oqtane.Framework/Oqtane.Server/bin/Debug/net9.0/
+RUN cp /src/Oqtane.Framework/Oqtane.Server/bin/$BUILD_CONFIGURATION/net9.0/Oqtane.Shared.dll /src/Oqtane.Framework/Oqtane.Server/bin/Debug/net9.0/
+
+
 # Build csdp submodule
-WORKDIR /src/csdp/Server
+WORKDIR /src/csdp/Shared
 RUN dotnet build -c $BUILD_CONFIGURATION
 
 WORKDIR /src/csdp/Client
 RUN dotnet build -c $BUILD_CONFIGURATION
 
-WORKDIR /src/csdp/Shared
+WORKDIR /src/csdp/Server
 RUN dotnet build -c $BUILD_CONFIGURATION
+
 
 # Publish Oqtane.Server
 WORKDIR /src/Oqtane.Framework/Oqtane.Server
