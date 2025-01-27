@@ -70,6 +70,15 @@ RUN dotnet build -c $BUILD_CONFIGURATION
 WORKDIR /src/Oqtane.Framework/Oqtane.Server
 RUN dotnet publish Oqtane.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+
+# Publish Biote.Module.Csdp.Server
+WORKDIR /src/csdp/Shared
+RUN dotnet publish Biote.Module.Csdp.Shared.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Publish Biote.Module.Csdp.Client
+WORKDIR /src/csdp/Client
+RUN dotnet publish Biote.Module.Csdp.Client.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
 # Publish Biote.Module.Csdp.Server
 WORKDIR /src/csdp/Server
 RUN dotnet publish Biote.Module.Csdp.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
