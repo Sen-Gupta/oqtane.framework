@@ -17,6 +17,7 @@
 @using Oqtane.Themes
 @using Oqtane.Extensions
 @using System.Globalization
+@using Radzen.Blazor
 @inject NavigationManager NavigationManager
 @inject IAntiforgery Antiforgery
 @inject IConfigManager ConfigManager
@@ -41,7 +42,7 @@
         <base href="/" />
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
         <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
+        <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)">
         <link rel="stylesheet" href="css/app.css" />
         @if (_scripts.Contains("PWA Manifest"))
         {
@@ -74,7 +75,7 @@
 
             <script src="_framework/blazor.web.js"></script>
             <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-            <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+            <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
             <script src="js/app.js"></script>
             <script src="js/loadjs.min.js"></script>
             <script src="js/interop.js"></script>
