@@ -52,6 +52,7 @@ RUN dotnet build -c $BUILD_CONFIGURATION
 RUN mkdir -p /src/Oqtane.Framework/Oqtane.Server/bin/Debug/net9.0
 RUN cp /src/Oqtane.Framework/Oqtane.Server/bin/$BUILD_CONFIGURATION/net9.0/Oqtane.Server.dll /src/Oqtane.Framework/Oqtane.Server/bin/Debug/net9.0/
 RUN cp /src/Oqtane.Framework/Oqtane.Server/bin/$BUILD_CONFIGURATION/net9.0/Oqtane.Shared.dll /src/Oqtane.Framework/Oqtane.Server/bin/Debug/net9.0/
+RUN cp /src/Oqtane.Framework/Oqtane.Server/bin/$BUILD_CONFIGURATION/net9.0/Oqtane.Client.dll /src/Oqtane.Framework/Oqtane.Server/bin/Debug/net9.0/
 
 
 # Build csdp submodule
