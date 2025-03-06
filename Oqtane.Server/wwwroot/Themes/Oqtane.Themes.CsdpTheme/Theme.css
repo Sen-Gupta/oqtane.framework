@@ -12,6 +12,7 @@
     --green-color: #449d35;
 }
 
+
 .table > :not(caption) > * > * {
     box-shadow: none;
 }
