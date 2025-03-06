@@ -1,3 +1,19 @@
+:root {
+    --bg-primary: #683e98;
+    --text-primary: #424242;
+    /* Text Colors */
+    --text-light: #ffffff;
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+    /* Border Colors */
+    --border-light: #dee2e6;
+    --border-dark: #495057;
+    --btn-padding: 6px 30px;
+    --mud-palette-drawer-background: #e5e5e5;
+    --purple-active: #6a1b9a;
+    --green-color: #449d35;
+}
+
 .table > :not(caption) > * > * {
     box-shadow: none;
 }
@@ -286,4 +302,179 @@
         margin-top: 200px;
     }
 }
+
+.mud-button {
+    border-radius: 25px;
+    font-size: 12px;
+    padding: var(--btn-padding);
+}
+.needs-validation .form-group .btn {
+    border-radius: 25px;
+    font-size: 14px;
+    padding: var(--btn-padding);
+}
+
+#username {
+    width: 100%;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
+    margin-bottom: 0;
+    padding: 13px 25px;
+    outline: 0;
+    padding: 10px 22px;
+    background-color: transparent !important;
+}
+
+#password {
+    border: none;
+    border-radius: 25px 0px 0px 25px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .16);
+    margin-bottom: 0;
+    padding: 13px 25px;
+    outline: 0;
+    padding: 10px 22px;
+    background-color: transparent !important;
+}
+
+.btn-primary {
+    background-color: var(--bg-primary) !important;
+    border-radius: 25px;
+    font-size: 14px;
+    padding:var(--btn-padding);
+    border: none;
+    font-weight: 600;
+}
+
+.btn-secondary, .btn-danger, .btn-success {
+    border-radius: 25px;
+    font-size: 14px;
+    padding: var(--btn-padding);
+    font-weight: 600;
+    border: none;
+}
+
+.Oqtane-Modules-Admin-Login {
+    width: 350px !important;
+}
+
+.Oqtane-Modules-Admin-Login .app-tooltip::before {
+        margin-left: 0;
+    }
+
+.Oqtane-Modules-Admin-Login.app-tooltip::after {
+        font-size: 12px;
+        margin-left: 0;
+    }
+
+input:focus {
+    background: #fff !important; /* Ensure background stays white when focused */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .16); /* Optional: Keep box-shadow on focus */
+}
+
+.color-green {
+    color:var(--green-color) !important;
+}
+.color-purple {
+    color: var(--purple-active) !important;
+}
+
+.mud-nav-item a {
+    text-decoration: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mud-navmenu {
+    width:100% !important;
+}
+
+.custom-drawer {
+    background-color: var(--mud-palette-drawer-background) !important;
+    box-shadow: 3px 0px 18px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline-secondary {
+    color: var(--text-light);
+    border-width: 2px;
+    margin-right: 5px;
+}
+
+/* Custom MudAppBar Height */
+.mud-appbar-custom-height {
+    height: 50px !important; /* Adjust the height as required */
+}
+.custom-logo img {
+    width:120px;
+}
+
+/*.mud-nav-link {
+    vertical-align: middle;
+    align-items: center;
+    
+}*/
+    .mud-nav-link .mud-icon-root {
+        font-size: 1rem;
+       
+    }
+
+.mud-input-root, .mud-menu-item .mud-menu-item-text {
+    color: var(--text-primary) !important;
+    font-size: 0.9rem;
+}
+
+.active {
+    background: var(--purple-active) !important;
+    color: var(--text-light) !important;
+}
+
+    .active .mud-icon-root {
+        color: var(--text-light) !important;
+    }
+
+.tab-pane.fade.show.active {
+    background-color: transparent !important;
+    color: inherit !important;
+    background: inherit !important;
+}
+
+
+.mud-tabs-vertical .mud-tab {
+    text-align: right !important;
+    justify-content: right !important;
+    color: var(--text-dark); /* Applies to normal .mud-tab */
+}
+
+    .mud-tabs-vertical .mud-tab.mud-tab-active {
+        color: var(--mud-palette-primary) !important; /* Resets color to default, preventing --text-dark */
+    }
+
+
+
+
+
+
+/*.mud-input.mud-input-outlined:focus-within .mud-input-outlined-border {
+    margin-top: -6px;
+}
+
+.mud-tabs .mud-input.mud-input-outlined:focus-within .mud-input-outlined-border {
+    margin-top: 0px;
+}*/
+.mud-input-control > .mud-input-control-input-container > .mud-input-label-outlined.mud-input-label-inputcontrol {
+    /*    padding-top: 10px !important;*/
+    color: var(--text-dark) !important;
+    background: var(--text-light) !important;
+}
+
+.mud-input:focus-within ~ label.mud-input-label.mud-input-label-inputcontrol {
+    background: var(--text-light) !important;
+    padding-top: 0 !important;
+}
+
+
+
+
+
+
 
