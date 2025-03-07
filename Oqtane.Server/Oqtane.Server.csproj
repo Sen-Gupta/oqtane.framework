@@ -70,6 +70,15 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.1" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
+
+    <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
+    <PackageReference Include="Serilog.Sinks.Http" Version="9.1.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
+    
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Oqtane.Client\Oqtane.Client.csproj" />
