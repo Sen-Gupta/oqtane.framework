@@ -12,6 +12,8 @@
     --mud-palette-drawer-background: #e5e5e5;
     --purple-active: #6a1b9a;
     --green-color: #449d35;
+    --table-header-dark: #99e989;
+    --table-header-light: #d6ffc2;
 }
 
 
@@ -473,6 +475,68 @@ input:focus {
     padding-top: 0 !important;
 }
 
+
+/* For even rows */
+.rz-data-row:nth-child(even) {
+    background-color: #f2f2f2 !important; /* Gray */
+}
+
+/* For odd rows */
+.rz-data-row:nth-child(odd) {
+    background-color: white !important; /* White */
+}
+
+.table-cell-edited {
+    position: relative;
+}
+
+    .table-cell-edited::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-top: 10px solid red;
+        border-left: 10px solid transparent;
+    }
+.rz-grid-table-fixed .rz-frozen-cell-left, .rz-grid-table thead th {
+    padding: 10px 6px;
+}
+.rz-grid-table td {
+    padding: 6px 10px !important;
+}
+.rz-group-header, .rz-grid-table-fixed .rz-frozen-cell-left, .rz-grid-table-fixed .rz-frozen-cell-right-inner, .rz-grid-table tr td:last-child:not(.rz-composite-cell), .rz-grid-table thead th {
+    background: var(--table-header-light) !important;
+    
+    /*    background:   #c4f7c4 !important;*/
+}
+.rz-grid-table-fixed .rz-frozen-cell-right-inner {
+    text-align: center;
+}
+    .mud-select .mud-select-input .mud-input-slot, .mud-input > input.mud-input-root-outlined {
+        font-size: 0.9rem !important;
+    }
+.rz-group-header {
+    border-bottom: solid 1px #ccc;
+    padding: 10px;
+    background: var(--table-header-dark) !important;
+}
+.rz-grid-table td .rz-cell-data {
+    font-size: 0.8rem !important;
+}
+.rz-grid-table thead th .rz-column-title {
+    padding-left: 5px !important;
+    font-size: 0.8rem !important;
+    font-weight:700 !important;
+}
+.rz-state-highlight.rz-multiselect-item, .rz-multiselect-items li.rz-state-highlight {
+    background: var(--table-header-light) !important;
+    color:var(--text-dark) !important;
+}
+.rz-state-highlight.rz-multiselect-item:hover, .rz-multiselect-items li.rz-state-highlight:hover {
+    background: var(--table-header-dark) !important;    
+}
 
 
 
