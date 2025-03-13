@@ -610,3 +610,14 @@ input:focus {
 .mud-tabs.mud-tabs-vertical .mud-tooltip-root {
     width: 200px !important;
 }
+.rz-link {
+    color: var(--rz-link-color) !important;
+    background: none !important;
+}
+.w-full {
+    width: 100% !important;
+}
+.rz-custom-header {
+    width: 100% !important;
+    padding-right: 0.6rem !important;
+}
