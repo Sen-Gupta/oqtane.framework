@@ -37,6 +37,7 @@
     <EmbeddedResource Include="Scripts\MigrateTenant.sql" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="EntityFrameworkCore.DataEncryption" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.0-preview3.24332.3" />
