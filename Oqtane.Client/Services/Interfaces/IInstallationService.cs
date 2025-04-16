@@ -26,21 +26,14 @@ namespace Oqtane.Services
         /// <summary>
         /// Starts the upgrade process
         /// </summary>
+        /// <param name="backup">indicates if files should be backed up during upgrade</param>
         /// <returns>internal status/message object</returns>
-        Task<Installation> Upgrade();
+        Task<Installation> Upgrade(bool backup);
 
         /// <summary>
         /// Restarts the installation
         /// </summary>
         /// <returns>internal status/message object</returns>
         Task RestartAsync();
-
-        /// <summary>
-        /// Registers a new <see cref="User"/>
-        /// </summary>
-        /// <param name="email">Email of the user to be registered</param>
-        /// <returns></returns>
-        Task RegisterAsync(string email);
-
     }
 }

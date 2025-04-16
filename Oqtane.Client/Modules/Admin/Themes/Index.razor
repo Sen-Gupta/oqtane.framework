@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject IThemeService ThemeService
 @inject IPackageService PackageService
+@inject ISiteService SiteService
 @inject IStringLocalizer<Index> Localizer
 @inject IStringLocalizer<SharedResources> SharedLocalizer
 
@@ -14,11 +15,12 @@
 else
 {
     <ActionLink Action="Add" Text="Install Theme" ResourceKey="InstallTheme" />
-    @((MarkupString)"&nbsp;")
-    <ActionLink Action="Create" Text="Create Theme" ResourceKey="CreateTheme" Class="btn btn-secondary" />
+    <ActionLink Action="Create" Text="Create Theme" ResourceKey="CreateTheme" Class="btn btn-secondary ps-2" />
+    <button type="button" class="btn btn-secondary pw-2" @onclick="@Synchronize">@Localizer["Synchronize"]</button>
 
     <Pager Items="@_themes">
         <Header>
+            <th style="width: 1px;">&nbsp;</th>
             <th style="width: 1px;">&nbsp;</th>
             <th style="width: 1px;">&nbsp;</th>
             <th>@SharedLocalizer["Name"]</th>
@@ -32,10 +34,11 @@ else
             <td><ActionLink Action="Edit" Text="Edit" Parameters="@($"id=" + context.ThemeId.ToString())" ResourceKey="EditTheme" /></td>
             <td>
 				@if (context.AssemblyName != Constants.ClientId)
-                    {
+                {
                     <ActionDialog Header="Delete Theme" Message="@string.Format(Localizer["Confirm.Theme.Delete"], context.Name)" Action="Delete" Security="SecurityAccessLevel.Host" Class="btn btn-danger" OnClick="@(async () => await DeleteTheme(context))" ResourceKey="DeleteTheme" />
-                    }
+                }
             </td>
+            <td><NavLink class="btn btn-secondary" href="@NavigateUrl("admin/site")">@Localizer["Assign"]</NavLink></td>
             <td>@context.Name</td>
             <td>@context.Version</td>
             <td>
@@ -168,6 +171,29 @@ else
         {
             await logger.LogError(ex, "Error Deleting Theme {Theme} {Error}", Theme, ex.Message);
             AddModuleMessage(Localizer["Error.Theme.Delete"], MessageType.Error);
+        }
+    }
+
+    private async Task Synchronize()
+    {
+        try
+        {
+            ShowProgressIndicator();
+            foreach (var theme in _themes)
+            {
+                if (!string.IsNullOrEmpty(theme.PackageName) && !_packages.Any(item => item.PackageId == theme.PackageName))
+                {
+                    await PackageService.GetPackageAsync(theme.PackageName, theme.Version, false);
+                }
+            }
+            HideProgressIndicator();
+            AddModuleMessage(Localizer["Success.Theme.Synchronize"], MessageType.Success);
+            NavigationManager.NavigateTo(NavigateUrl(PageState.Page.Path, true));
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Synchronizing Themes {Error}", ex.Message);
+            AddModuleMessage(Localizer["Error.Theme.Synchronize"], MessageType.Error);
         }
     }
 }

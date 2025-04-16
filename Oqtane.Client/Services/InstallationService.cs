@@ -47,19 +47,14 @@ namespace Oqtane.Services
             return await PostJsonAsync<InstallConfig,Installation>(ApiUrl, config);
         }
 
-        public async Task<Installation> Upgrade()
+        public async Task<Installation> Upgrade(bool backup)
         {
-            return await GetJsonAsync<Installation>($"{ApiUrl}/upgrade");
+            return await GetJsonAsync<Installation>($"{ApiUrl}/upgrade/?backup={backup}");
         }
 
         public async Task RestartAsync()
         {
             await PostAsync($"{ApiUrl}/restart");
-        }
-
-        public async Task RegisterAsync(string email)
-        {
-            await PostJsonAsync($"{ApiUrl}/register?email={WebUtility.UrlEncode(email)}", true);
         }
     }
 }

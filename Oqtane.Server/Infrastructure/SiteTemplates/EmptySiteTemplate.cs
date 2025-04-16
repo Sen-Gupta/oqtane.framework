@@ -1,12 +1,9 @@
-using Oqtane.Models;
-using Oqtane.Infrastructure;
 using System.Collections.Generic;
-using Oqtane.Extensions;
-using Oqtane.Repository;
-using Oqtane.Shared;
 using Oqtane.Documentation;
+using Oqtane.Models;
+using Oqtane.Shared;
 
-namespace Oqtane.SiteTemplates
+namespace Oqtane.Infrastructure.SiteTemplates
 {
     [PrivateApi("Mark Site-Template classes as private, since it's not very useful in the public docs")]
     public class EmptySiteTemplate : ISiteTemplate

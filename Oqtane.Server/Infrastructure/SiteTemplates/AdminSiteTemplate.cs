@@ -1,14 +1,21 @@
-using Oqtane.Models;
-using Oqtane.Infrastructure;
 using System.Collections.Generic;
-using Oqtane.Shared;
+using Microsoft.Extensions.Localization;
 using Oqtane.Documentation;
+using Oqtane.Models;
+using Oqtane.Shared;
 
-namespace Oqtane.SiteTemplates
+namespace Oqtane.Infrastructure.SiteTemplates
 {
     [PrivateApi("Mark Site-Template classes as private, since it's not very useful in the public docs")]
     public class AdminSiteTemplate : ISiteTemplate
     {
+        private readonly IStringLocalizer<AdminSiteTemplate> _localizer;
+
+        public AdminSiteTemplate(IStringLocalizer<AdminSiteTemplate> localizer)
+        {
+            _localizer = localizer;
+        }
+
         public string Name
         {
             get { return "Admin Site Template"; } 
@@ -171,10 +178,72 @@ namespace Oqtane.SiteTemplates
 
             pageTemplates.Add(new PageTemplate
             {
+                Name = "Privacy",
+                Parent = "",
+                Path = "privacy",
+                Order = seed + 11,
+                Icon = Icons.Eye,
+                IsNavigation = false,
+                IsPersonalizable = false,
+                PermissionList = new List<Permission>
+                    {
+                        new Permission(PermissionNames.View, RoleNames.Everyone, true),
+                        new Permission(PermissionNames.View, RoleNames.Admin, true),
+                        new Permission(PermissionNames.Edit, RoleNames.Admin, true)
+                    },
+                PageTemplateModules = new List<PageTemplateModule>
+                    {
+                        new PageTemplateModule { ModuleDefinitionName = "Oqtane.Modules.HtmlText, Oqtane.Client", Title = "Privacy Policy", Pane = PaneNames.Default,
+                            PermissionList = new List<Permission> {
+                                new Permission(PermissionNames.View, RoleNames.Everyone, true),
+                                new Permission(PermissionNames.View, RoleNames.Admin, true),
+                                new Permission(PermissionNames.Edit, RoleNames.Admin, true)
+                            },
+                            Settings = new List<Setting> {
+                                new Setting { SettingName = "DynamicTokens", SettingValue = "true" }
+                            },
+                            Content = _localizer["Privacy"]
+                        }
+                    }
+            });
+
+            pageTemplates.Add(new PageTemplate
+            {
+                Name = "Terms",
+                Parent = "",
+                Path = "terms",
+                Order = seed + 13,
+                Icon = Icons.List,
+                IsNavigation = false,
+                IsPersonalizable = false,
+                PermissionList = new List<Permission>
+                    {
+                        new Permission(PermissionNames.View, RoleNames.Everyone, true),
+                        new Permission(PermissionNames.View, RoleNames.Admin, true),
+                        new Permission(PermissionNames.Edit, RoleNames.Admin, true)
+                    },
+                PageTemplateModules = new List<PageTemplateModule>
+                    {
+                        new PageTemplateModule { ModuleDefinitionName = "Oqtane.Modules.HtmlText, Oqtane.Client", Title = "Terms of Use", Pane = PaneNames.Default,
+                            PermissionList = new List<Permission> {
+                                new Permission(PermissionNames.View, RoleNames.Everyone, true),
+                                new Permission(PermissionNames.View, RoleNames.Admin, true),
+                                new Permission(PermissionNames.Edit, RoleNames.Admin, true)
+                            },
+                            Settings = new List<Setting> {
+                                new Setting { SettingName = "DynamicTokens", SettingValue = "true" }
+                            },
+                            Content = _localizer["Terms"]
+                        }
+                    }
+            });
+
+            pageTemplates.Add(new PageTemplate
+            {
                 Name = "Not Found",
                 Parent = "",
                 Path = "404",
-                Order = seed + 11,
+                Order = seed + 15,
                 Icon = Icons.X,
                 IsNavigation = false,
                 IsPersonalizable = false,
@@ -266,6 +335,7 @@ namespace Oqtane.SiteTemplates
                 PermissionList = new List<Permission>
                 {
                     new Permission(PermissionNames.View, RoleNames.Admin, true),
+                    new Permission(PermissionNames.View, RoleNames.Registered, true), // required to support personalized pages
                     new Permission(PermissionNames.Edit, RoleNames.Admin, true)
                 },
                 PageTemplateModules = new List<PageTemplateModule>
@@ -276,6 +346,7 @@ namespace Oqtane.SiteTemplates
                         PermissionList = new List<Permission>
                         {
                             new Permission(PermissionNames.View, RoleNames.Admin, true),
+                            new Permission(PermissionNames.View, RoleNames.Registered, true), // required to support personalized pages
                             new Permission(PermissionNames.Edit, RoleNames.Admin, true)
                         },
                         Content = ""

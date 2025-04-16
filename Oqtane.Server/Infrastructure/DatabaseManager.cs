@@ -91,7 +91,7 @@ namespace Oqtane.Infrastructure
             // get configuration
             if (install == null)
             {
-                // startup or silent installation
+                // startup or automated installation
                 install = new InstallConfig
                 {
                     ConnectionString = _config.GetConnectionString(SettingKeys.ConnectionStringKey),
@@ -111,7 +111,7 @@ namespace Oqtane.Infrastructure
 
                     if (!string.IsNullOrEmpty(install.ConnectionString) && !string.IsNullOrEmpty(install.Aliases) && !string.IsNullOrEmpty(install.HostPassword) && !string.IsNullOrEmpty(install.HostEmail))
                     {
-                        // silent install
+                        // automated install
                         install.SiteTemplate = GetInstallationConfig(SettingKeys.SiteTemplateKey, Constants.DefaultSiteTemplate);
                         install.DefaultTheme = GetInstallationConfig(SettingKeys.DefaultThemeKey, Constants.DefaultTheme);
                         install.DefaultContainer = GetInstallationConfig(SettingKeys.DefaultContainerKey, Constants.DefaultContainer);
@@ -120,7 +120,11 @@ namespace Oqtane.Infrastructure
                     }
                     else
                     {
-                        // silent installation is missing required information
+                        if (!string.IsNullOrEmpty(install.ConnectionString))
+                        {
+                            // automated installation is missing required information
+                            result.Message = $"Error Installing Master Database For {SettingKeys.ConnectionStringKey}: {install.ConnectionString}. If You Are Trying To Execute An Automated Installation You Must Include The HostEmail, HostPassword, And DefaultAlias In appsettings.json.";
+                        }
                         install.ConnectionString = "";
                     }
                 }
@@ -261,6 +265,7 @@ namespace Oqtane.Infrastructure
                     var installation = IsInstalled();
                     try
                     {
+                        UpdateInstallation();
                         UpdateConnectionString(install.ConnectionString);
                         UpdateDatabaseType(install.DatabaseType);
 
@@ -487,6 +492,7 @@ namespace Oqtane.Infrastructure
                                 moduleDefinition.Categories = moduledef.Categories;
                                 // update version
                                 moduleDefinition.Version = versions[versions.Length - 1];
+                                moduleDefinition.ModifiedOn = DateTime.UtcNow;
                                 db.Entry(moduleDefinition).State = EntityState.Modified;
                                 db.SaveChanges();
                             }
@@ -662,6 +668,11 @@ namespace Oqtane.Infrastructure
             return connectionString;
         }
 
+        public void UpdateInstallation()
+        {
+            _config.GetInstallationId();
+        }
+
         public void UpdateConnectionString(string connectionString)
         {
             connectionString = DenormalizeConnectionString(connectionString);
@@ -673,7 +684,10 @@ namespace Oqtane.Infrastructure
 
         public void UpdateDatabaseType(string databaseType)
         {
-            _configManager.AddOrUpdateSetting($"{SettingKeys.DatabaseSection}:{SettingKeys.DatabaseTypeKey}", databaseType, true);
+            if (_config.GetSetting($"{SettingKeys.DatabaseSection}:{SettingKeys.DatabaseTypeKey}", "") != databaseType)
+            {
+                _configManager.AddOrUpdateSetting($"{SettingKeys.DatabaseSection}:{SettingKeys.DatabaseTypeKey}", databaseType, true);
+            }
         }
 
         public void AddEFMigrationsHistory(ISqlRepository sql, string connectionString, string databaseType, string version, bool isMaster)
@@ -717,6 +731,7 @@ namespace Oqtane.Infrastructure
             {
                 _configManager.AddOrUpdateSetting($"{SettingKeys.DatabaseSection}:{SettingKeys.DatabaseTypeKey}", Constants.DefaultDBType, true);
             }
+
             if (!_configManager.GetSection(SettingKeys.AvailableDatabasesSection).Exists())
             {
                 string databases = "[";
@@ -725,6 +740,19 @@ namespace Oqtane.Infrastructure
                 databases += "{ \"Name\": \"SQLite\", \"ControlType\": \"Oqtane.Installer.Controls.SqliteConfig, Oqtane.Client\", \"DBTYpe\": \"Oqtane.Database.Sqlite.SqliteDatabase, Oqtane.Database.Sqlite\" },";
                 databases += "{ \"Name\": \"MySQL\", \"ControlType\": \"Oqtane.Installer.Controls.MySQLConfig, Oqtane.Client\", \"DBTYpe\": \"Oqtane.Database.MySQL.SqlServerDatabase, Oqtane.Database.MySQL\" },";
                 databases += "{ \"Name\": \"PostgreSQL\", \"ControlType\": \"Oqtane.Installer.Controls.PostgreSQLConfig, Oqtane.Client\", \"DBTYpe\": \"Oqtane.Database.PostgreSQL.PostgreSQLDatabase, Oqtane.Database.PostgreSQL\" }";
+                databases += "]";
+                _configManager.AddOrUpdateSetting(SettingKeys.AvailableDatabasesSection, databases, true);
+            }
+            var availabledatabases = _configManager.GetSection(SettingKeys.AvailableDatabasesSection).GetChildren();
+            if (!availabledatabases.Any(item => item.GetSection("Name").Value == "Azure SQL"))
+            {
+                // Azure SQL added in 6.1.2
+                string databases = "[";
+                foreach (var database in availabledatabases)
+                {
+                    databases += "{ " + $"\"Name\": \"{database["Name"]}\", \"ControlType\": \"{database["ControlType"]}\", \"DBTYpe\": \"{database["DBType"]}\"" + " },";
+                }
+                databases += "{ \"Name\": \"Azure SQL\", \"ControlType\": \"Oqtane.Installer.Controls.AzureSqlConfig, Oqtane.Client\", \"DBTYpe\": \"Oqtane.Database.SqlServer.SqlServerDatabase, Oqtane.Database.SqlServer\" }";
                 databases += "]";
                 _configManager.AddOrUpdateSetting(SettingKeys.AvailableDatabasesSection, databases, true);
             }

@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Oqtane.Infrastructure.SiteTemplates;
 using Oqtane.Models;
 using Oqtane.Repository;
 using Oqtane.Shared;
@@ -71,8 +74,11 @@ namespace Oqtane.Infrastructure
                     case "5.2.1":
                         Upgrade_5_2_1(tenant, scope);
                         break;
-                    case "6.0.1":
-                        Upgrade_6_0_1(tenant, scope);
+                    case "6.1.0":
+                        Upgrade_6_1_0(tenant, scope);
+                        break;
+                    case "6.1.1":
+                        Upgrade_6_1_1(tenant, scope);
                         break;
                 }
             }
@@ -446,52 +452,85 @@ namespace Oqtane.Infrastructure
             AddPagesToSites(scope, tenant, pageTemplates);
         }
 
-        private void Upgrade_6_0_1(Tenant tenant, IServiceScope scope)
+        private void Upgrade_6_1_0(Tenant tenant, IServiceScope scope)
         {
-            // assemblies which have been relocated to the bin/refs folder in .NET 9
+            // remove MySql.EntityFrameworkCore package (replaced by Pomelo.EntityFrameworkCore.MySql)
             string[] assemblies = {
-                "Microsoft.AspNetCore.Authorization.dll",
-                "Microsoft.AspNetCore.Components.Authorization.dll",
-                "Microsoft.AspNetCore.Components.dll",
-                "Microsoft.AspNetCore.Components.Forms.dll",
-                "Microsoft.AspNetCore.Components.Web.dll",
-                "Microsoft.AspNetCore.Cryptography.Internal.dll",
-                "Microsoft.AspNetCore.Cryptography.KeyDerivation.dll",
-                "Microsoft.AspNetCore.Metadata.dll",
-                "Microsoft.Extensions.Caching.Memory.dll",
-                "Microsoft.Extensions.Configuration.Binder.dll",
-                "Microsoft.Extensions.Configuration.FileExtensions.dll",
-                "Microsoft.Extensions.Configuration.Json.dll",
-                "Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-                "Microsoft.Extensions.DependencyInjection.dll",
-                "Microsoft.Extensions.Diagnostics.Abstractions.dll",
-                "Microsoft.Extensions.Diagnostics.dll",
-                "Microsoft.Extensions.Http.dll",
-                "Microsoft.Extensions.Identity.Core.dll",
-                "Microsoft.Extensions.Identity.Stores.dll",
-                "Microsoft.Extensions.Localization.Abstractions.dll",
-                "Microsoft.Extensions.Localization.dll",
-                "Microsoft.Extensions.Logging.Abstractions.dll",
-                "Microsoft.Extensions.Logging.dll",
-                "Microsoft.Extensions.Options.dll",
-                "Microsoft.JSInterop.dll",
-                "System.Text.Json.dll"
+                "MySql.EntityFrameworkCore.dll"
             };
 
-            foreach (var assembly in assemblies)
+            RemoveAssemblies(tenant, assemblies, "6.1.0");
+        }
+
+        private void Upgrade_6_1_1(Tenant tenant, IServiceScope scope)
+        {
+            var localizer = scope.ServiceProvider.GetRequiredService<IStringLocalizer<AdminSiteTemplate>>();
+
+            var pageTemplates = new List<PageTemplate>
             {
-                try
+                new PageTemplate
                 {
-                    var binFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                    var filepath = Path.Combine(binFolder, assembly);
-                    if (System.IO.File.Exists(filepath)) System.IO.File.Delete(filepath);
-                }
-                catch (Exception ex)
+                    Name = "Privacy",
+                    Parent = "",
+                    Path = "privacy",
+                    Order = 1011,
+                    Icon = Icons.Eye,
+                    IsNavigation = false,
+                    IsPersonalizable = false,
+                    PermissionList = new List<Permission>
+                    {
+                        new Permission(PermissionNames.View, RoleNames.Everyone, true),
+                        new Permission(PermissionNames.View, RoleNames.Admin, true),
+                        new Permission(PermissionNames.Edit, RoleNames.Admin, true)
+                    },
+                    PageTemplateModules = new List<PageTemplateModule>
+                    {
+                        new PageTemplateModule { ModuleDefinitionName = "Oqtane.Modules.HtmlText, Oqtane.Client", Title = "Privacy Policy", Pane = PaneNames.Default,
+                            PermissionList = new List<Permission> {
+                                new Permission(PermissionNames.View, RoleNames.Everyone, true),
+                                new Permission(PermissionNames.View, RoleNames.Admin, true),
+                                new Permission(PermissionNames.Edit, RoleNames.Admin, true)
+                            },
+                            Settings = new List<Setting> {
+                                new Setting { SettingName = "DynamicTokens", SettingValue = "true" }
+                            },
+                            Content = localizer["Privacy"]
+                        }
+                    }
+                },
+                new PageTemplate
                 {
-                    // error deleting asesmbly
-                    _filelogger.LogError(Utilities.LogMessage(this, $"Oqtane Error: 6.0.1 Upgrade Error Removing {assembly} - {ex}"));
+                    Name = "Terms",
+                    Parent = "",
+                    Path = "terms",
+                    Order = 1013,
+                    Icon = Icons.List,
+                    IsNavigation = false,
+                    IsPersonalizable = false,
+                    PermissionList = new List<Permission>
+                    {
+                        new Permission(PermissionNames.View, RoleNames.Everyone, true),
+                        new Permission(PermissionNames.View, RoleNames.Admin, true),
+                        new Permission(PermissionNames.Edit, RoleNames.Admin, true)
+                    },
+                    PageTemplateModules = new List<PageTemplateModule>
+                    {
+                        new PageTemplateModule { ModuleDefinitionName = "Oqtane.Modules.HtmlText, Oqtane.Client", Title = "Terms of Use", Pane = PaneNames.Default,
+                            PermissionList = new List<Permission> {
+                                new Permission(PermissionNames.View, RoleNames.Everyone, true),
+                                new Permission(PermissionNames.View, RoleNames.Admin, true),
+                                new Permission(PermissionNames.Edit, RoleNames.Admin, true)
+                            },
+                            Settings = new List<Setting> {
+                                new Setting { SettingName = "DynamicTokens", SettingValue = "true" }
+                            },
+                            Content = localizer["Terms"]
+                        }
+                    }
                 }
-            }
+            };
+
+            AddPagesToSites(scope, tenant, pageTemplates);
         }
 
         private void AddPagesToSites(IServiceScope scope, Tenant tenant, List<PageTemplate> pageTemplates)
@@ -502,6 +541,28 @@ namespace Oqtane.Infrastructure
             {
                 tenants.SetAlias(tenant.TenantId, site.SiteId);
                 sites.CreatePages(site, pageTemplates, null);
+            }
+        }
+
+        private void RemoveAssemblies(Tenant tenant, string[] assemblies, string version)
+        {
+            // in a development environment assemblies cannot be removed as the debugger runs fron /bin folder and locks the files
+            if (tenant.Name == TenantNames.Master && !_environment.IsDevelopment())
+            {
+                foreach (var assembly in assemblies)
+                {
+                    try
+                    {
+                        var binFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                        var filepath = Path.Combine(binFolder, assembly);
+                        if (System.IO.File.Exists(filepath)) System.IO.File.Delete(filepath);
+                    }
+                    catch (Exception ex)
+                    {
+                        // error deleting asesmbly
+                        _filelogger.LogError(Utilities.LogMessage(this, $"Oqtane Error: {version} Upgrade Error Removing {assembly} - {ex}"));
+                    }
+                }
             }
         }
     }
