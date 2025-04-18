@@ -121,6 +121,17 @@ namespace Oqtane.Shared
             return $"{alias?.BaseUrl}{url}{Constants.ImageUrl}{fileId}/{width}/{height}/{mode}/{position}/{background}/{rotate}/{recreate}";
         }
 
+        public static string ImageUrl(Alias alias, string folderpath, string filename, int width, int height, string mode, string position, string background, int rotate, string format, bool recreate)
+        {
+            var aliasUrl = (alias != null && !string.IsNullOrEmpty(alias.Path)) ? "/" + alias.Path : "";
+            mode = string.IsNullOrEmpty(mode) ? "crop" : mode;
+            position = string.IsNullOrEmpty(position) ? "center" : position;
+            background = string.IsNullOrEmpty(background) ? "transparent" : background;
+            format = string.IsNullOrEmpty(format) ? "png" : format;
+            var querystring = $"?width={width}&height={height}&mode={mode}&position={position}&background={background}&rotate={rotate}&format={format}&recreate={recreate}";
+            return $"{alias?.BaseUrl}{aliasUrl}{Constants.FileUrl}{folderpath.Replace("\\", "/")}{filename}{querystring}";
+        }
+
         public static string TenantUrl(Alias alias, string url)
         {
             url = (!url.StartsWith("/")) ? "/" + url : url;
@@ -480,6 +491,15 @@ namespace Oqtane.Shared
             return querystring;
         }
 
+        public static string GetUrlPath(string url)
+        {
+            if (url.Contains("?"))
+            {
+                url = url.Substring(0, url.IndexOf("?"));
+            }
+            return url;
+        }
+
         public static string LogMessage(object @class, string message)
         {
             return $"[{@class.GetType()}] {message}";
@@ -575,7 +595,6 @@ namespace Oqtane.Shared
             }
             else if (expiryDate.HasValue)
             {
-                // Include equality check here
                 return currentUtcTime <= expiryDate.Value;
             }
             else
@@ -586,29 +605,37 @@ namespace Oqtane.Shared
 
         public static bool ValidateEffectiveExpiryDates(DateTime? effectiveDate, DateTime? expiryDate)
         {
-            // Treat DateTime.MinValue as null
             effectiveDate ??= DateTime.MinValue;
             expiryDate ??= DateTime.MinValue;
 
-            // Check if both effectiveDate and expiryDate have values
             if (effectiveDate != DateTime.MinValue && expiryDate != DateTime.MinValue)
             {
                 return effectiveDate <= expiryDate;
             }
-            // Check if only effectiveDate has a value
             else if (effectiveDate != DateTime.MinValue)
             {
                 return true;
             }
-            // Check if only expiryDate has a value
             else if (expiryDate != DateTime.MinValue)
             {
                 return true;
             }
-            // If neither effectiveDate nor expiryDate has a value, consider the page/module visible
             else
             {
                 return true;
+            }
+        }
+
+        public static string GenerateSimpleHash(string text)
+        {
+            unchecked // prevent overflow exception
+            {
+                int hash = 23;
+                foreach (char c in text)
+                {
+                    hash = hash * 31 + c;
+                }
+                return hash.ToString("X8");
             }
         }
 

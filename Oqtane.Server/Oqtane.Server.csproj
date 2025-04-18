@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Configurations>Debug;Release</Configurations>
-    <Version>6.0.1</Version>
+    <Version>6.1.2</Version>
     <Product>Oqtane</Product>
     <Authors>Shaun Walker</Authors>
     <Company>.NET Foundation</Company>
@@ -11,7 +11,7 @@
     <Copyright>.NET Foundation</Copyright>
     <PackageProjectUrl>https://www.oqtane.org</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/oqtane/oqtane.framework/blob/dev/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>https://github.com/oqtane/oqtane.framework/releases/tag/v6.0.1</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/oqtane/oqtane.framework/releases/tag/v6.1.2</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/oqtane/oqtane.framework</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <RootNamespace>Oqtane</RootNamespace>
@@ -35,51 +35,52 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EntityFrameworkCore.DataEncryption" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.1" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.0-preview3.24332.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.1" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-    <PackageReference Include="Polly" Version="8.5.1" />
-    <PackageReference Include="RestSharp" Version="112.1.0" />
-    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11-pre20241216174303" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.72" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+    
 
     
-    <PackageReference Include="MudBlazor" Version="8.0.0" />
-    <PackageReference Include="Radzen.Blazor" Version="5.8.0" />
-    <PackageReference Include="MongoDB.Bson" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="9.0.1">
+    <PackageReference Include="MudBlazor" Version="8.5.1" />
+    <PackageReference Include="Radzen.Blazor" Version="6.6.1" />
+    <PackageReference Include="MongoDB.Bson" Version="3.3.0" />
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="9.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Spatial" Version="8.2.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="NSwag.ApiDescription.Client" Version="14.2.0">
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="14.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Include="System.Text.Json" Version="9.0.1" />
-    <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
 
-    <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.1" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
-    <PackageReference Include="Serilog.Sinks.Http" Version="9.1.0" />
+    <PackageReference Include="Serilog.Sinks.Http" Version="9.1.1" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
     
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.4" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
+    <PackageReference Include="Polly" Version="8.5.2" />
+    <PackageReference Include="RestSharp" Version="112.1.0" />
+
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Oqtane.Client\Oqtane.Client.csproj" />
@@ -88,7 +89,7 @@
   <ItemGroup>
     <ModuleTemplateFiles Include="$(ProjectDir)wwwroot\Modules\Templates\**\*.*" />
     <ThemeTemplateFiles Include="$(ProjectDir)wwwroot\Themes\Templates\**\*.*" />
-    <MySQLFiles Include="$(OutputPath)Oqtane.Database.MySQL.dll;$(OutputPath)Oqtane.Database.MySQL.pdb;$(OutputPath)MySql.EntityFrameworkCore.dll;$(OutputPath)MySql.Data.dll" />
+    <MySQLFiles Include="$(OutputPath)Oqtane.Database.MySQL.dll;$(OutputPath)Oqtane.Database.MySQL.pdb;$(OutputPath)Pomelo.EntityFrameworkCore.MySql.dll;$(OutputPath)MySql.Data.dll" />
     <PostgreSQLFiles Include="$(OutputPath)Oqtane.Database.PostgreSQL.dll;$(OutputPath)Oqtane.Database.PostgreSQL.pdb;$(OutputPath)EFCore.NamingConventions.dll;$(OutputPath)Npgsql.EntityFrameworkCore.PostgreSQL.dll;$(OutputPath)Npgsql.dll" />
     <SqliteFiles Include="$(OutputPath)Oqtane.Database.Sqlite.dll;$(OutputPath)Oqtane.Database.Sqlite.pdb;$(OutputPath)Microsoft.EntityFrameworkCore.Sqlite.dll" />
     <SqlServerFiles Include="$(OutputPath)Oqtane.Database.SqlServer.dll;$(OutputPath)Oqtane.Database.SqlServer.pdb;$(OutputPath)Microsoft.EntityFrameworkCore.SqlServer.dll" />

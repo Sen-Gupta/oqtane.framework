@@ -495,4 +495,28 @@
   <data name="OIDC" xml:space="preserve">
     <value>OpenID Connect (OIDC)</value>
   </data>
+  <data name="SaveTokens.Text" xml:space="preserve">
+    <value>Save Tokens?</value>
+  </data>
+  <data name="SaveTokens.HelpText" xml:space="preserve">
+    <value>Specify whether access and refresh tokens should be saved after a successful login. The default is false to reduce the size of the authentication cookie.</value>
+  </data>
+  <data name="Success.DeleteUser" xml:space="preserve">
+    <value>User Deleted Successfully</value>
+  </data>
+  <data name="Error.DeleteUser" xml:space="preserve">
+    <value>Error Deleting User</value>
+  </data>
+  <data name="LogoutEverywhere.Text" xml:space="preserve">
+    <value>Logout Everywhere?</value>
+  </data>
+  <data name="LogoutEverywhere.HelpText" xml:space="preserve">
+    <value>Do you want users to be logged out of every active session on any device, or only their current session?</value>
+  </data>
+  <data name="AllowHostRole.Text" xml:space="preserve">
+    <value>Allow Host Role?</value>
+  </data>
+  <data name="AllowHostRole.HelpText" xml:space="preserve">
+    <value>Indicate if host roles are supported from the identity provider. Please use caution with this option as it allows the host user to administrate every site within your installation.</value>
+  </data>
 </root>
