@@ -228,9 +228,11 @@ namespace Oqtane
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseAntiforgery();
-
+            
             if (_useSwagger)
             {
+                // Add Swagger security middleware to check for admin access
+                app.UseSwaggerSecurity();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/" + Constants.Version + "/swagger.json", Constants.PackageId + " " + Constants.Version); });
             }
