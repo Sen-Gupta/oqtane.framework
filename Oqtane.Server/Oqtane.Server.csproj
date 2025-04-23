@@ -43,7 +43,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.4" />
 
     
     <PackageReference Include="MudBlazor" Version="8.5.1" />
@@ -68,7 +68,8 @@
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageReference Include="Serilog.Sinks.Http" Version="9.1.1" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="9.0.0" />
-    
+
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.4" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.4" />
