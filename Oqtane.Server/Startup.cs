@@ -225,7 +225,9 @@ namespace Oqtane
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseAntiforgery();
-            
+            // execute any IServerStartup logic
+            app.ConfigureOqtaneAssemblies(env);
+
             if (_useSwagger)
             {
                 // Add Swagger security middleware to check for admin access
@@ -247,9 +249,6 @@ namespace Oqtane
                     .AddInteractiveWebAssemblyRenderMode()
                     .AddAdditionalAssemblies(typeof(SiteRouter).Assembly);
             });
-
-            // execute any IServerStartup logic
-            app.ConfigureOqtaneAssemblies(env);
 
             // simulate the fallback routing approach of traditional Blazor - allowing the custom SiteRouter to handle all routing concerns
             app.UseEndpoints(endpoints =>
