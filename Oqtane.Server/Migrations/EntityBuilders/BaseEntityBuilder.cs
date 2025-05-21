@@ -511,6 +511,23 @@ namespace Oqtane.Migrations.EntityBuilders
                 nullable: nullable // Define whether the column is nullable
             );
         }
+
+        /// <summary>
+        /// Adds a BYTEA column to the table
+        /// </summary>
+        /// <param name="columnName"></param>
+        /// <param name="nullable"></param>
+        protected OperationBuilder<AddColumnOperation> AddBYTEAColumn(ColumnsBuilder table, string name, bool nullable = false)
+        {
+
+            return table.Column<string>(
+                name: RewriteName(name),
+                type: "bytea",
+                nullable: nullable // Define whether the column is nullable
+            );
+        }
+
+
         #endregion
     }
 }
