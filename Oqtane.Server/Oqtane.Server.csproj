@@ -40,7 +40,7 @@
     <PackageReference Include="EntityFrameworkCore.DataEncryption" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.7" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
       <PrivateAssets>all</PrivateAssets>
@@ -81,11 +81,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
     <PackageReference Include="MailKit" Version="4.13.0" />
     
-    <PackageReference Include="Radzen.Blazor" Version="7.1.5" />
+    <PackageReference Include="Radzen.Blazor" Version="7.1.6" />
     <PackageReference Include="MudBlazor" Version="8.10.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="Polly" Version="8.6.2" />
     <PackageReference Include="RestSharp" Version="112.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="9.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.7" />
 
   </ItemGroup>
   <ItemGroup>
