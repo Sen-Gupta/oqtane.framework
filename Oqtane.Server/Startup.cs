@@ -228,6 +228,9 @@ namespace Oqtane
             // execute any IServerStartup logic
             app.ConfigureOqtaneAssemblies(env);
 
+            // execute any IServerStartup logic
+            app.ConfigureOqtaneAssemblies(env);
+
             if (_useSwagger)
             {
                 // Add Swagger security middleware to check for admin access
