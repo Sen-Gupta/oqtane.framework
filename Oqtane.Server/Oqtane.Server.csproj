@@ -20,10 +20,6 @@
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
     <CompressionEnabled>false</CompressionEnabled>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
-    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
-    
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="wwwroot\Modules\Templates\**" />
