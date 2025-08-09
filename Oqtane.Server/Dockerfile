@@ -21,10 +21,15 @@ COPY csdp/*.sln ./csdp/
 COPY csdp/Server/Biote.Module.Csdp.Server.csproj csdp/Server/
 COPY csdp/Client/Biote.Module.Csdp.Client.csproj csdp/Client/
 COPY csdp/Shared/Biote.Module.Csdp.Shared.csproj csdp/Shared/
+COPY syncer/*.sln ./syncer/
+COPY syncer/Server/Biote.Module.Syncer.Server.csproj syncer/Server/
+COPY syncer/Client/Biote.Module.Syncer.Client.csproj syncer/Client/
+COPY syncer/Shared/Biote.Module.Syncer.Shared.csproj syncer/Shared/
 
 # Restore dependencies for all projects
 RUN dotnet restore Oqtane.Framework/Oqtane.Server/Oqtane.Server.csproj
 RUN dotnet restore csdp/Server/Biote.Module.Csdp.Server.csproj
+RUN dotnet restore syncer/Server/Biote.Module.Syncer.Server.csproj
 
 # Copy source code
 COPY . .
@@ -65,6 +70,16 @@ RUN dotnet build -c $BUILD_CONFIGURATION
 WORKDIR /src/csdp/Server
 RUN dotnet build -c $BUILD_CONFIGURATION
 
+# Build syncer submodule
+WORKDIR /src/syncer/Shared
+RUN dotnet build -c $BUILD_CONFIGURATION
+
+WORKDIR /src/syncer/Client
+RUN dotnet build -c $BUILD_CONFIGURATION
+
+WORKDIR /src/syncer/Server
+RUN dotnet build -c $BUILD_CONFIGURATION
+
 
 # Publish Oqtane.Server
 WORKDIR /src/Oqtane.Framework/Oqtane.Server
@@ -82,6 +97,18 @@ RUN dotnet publish Biote.Module.Csdp.Client.csproj -c $BUILD_CONFIGURATION -o /a
 # Publish Biote.Module.Csdp.Server
 WORKDIR /src/csdp/Server
 RUN dotnet publish Biote.Module.Csdp.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Publish Biote.Module.Syncer.Shared
+WORKDIR /src/syncer/Shared
+RUN dotnet publish Biote.Module.Syncer.Shared.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Publish Biote.Module.Syncer.Client
+WORKDIR /src/syncer/Client
+RUN dotnet publish Biote.Module.Syncer.Client.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Publish Biote.Module.Syncer.Server
+WORKDIR /src/syncer/Server
+RUN dotnet publish Biote.Module.Syncer.Server.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Final runtime stage
 FROM base AS final
