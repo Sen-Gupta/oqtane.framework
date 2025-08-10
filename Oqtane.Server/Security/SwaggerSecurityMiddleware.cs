@@ -25,6 +25,20 @@ namespace Oqtane.Security
             // Check if the request is for swagger resources
             if (_swaggerPaths.Any(p => context.Request.Path.StartsWithSegments(p, System.StringComparison.OrdinalIgnoreCase)))
             {
+                // Bypass security for localhost
+                if (IsLocalhost(context))
+                {
+                    await _next(context);
+                    return;
+                }
+
+                // Check for API key authentication
+                if (HasValidApiKey(context))
+                {
+                    await _next(context);
+                    return;
+                }
+
                 // Get the current user if authenticated
                 User user = null;
                 if (context.User.Identity.IsAuthenticated)
@@ -47,6 +61,28 @@ namespace Oqtane.Security
             }
 
             await _next(context);
+        }
+
+        private bool IsLocalhost(HttpContext context)
+        {
+            var host = context.Request.Host.Host.ToLowerInvariant();
+            return host == "localhost" || host == "127.0.0.1" || host == "::1";
+        }
+
+        private bool HasValidApiKey(HttpContext context)
+        {
+            // Check for Authorization header with Bearer token
+            if (context.Request.Headers.ContainsKey("Authorization"))
+            {
+                var authHeader = context.Request.Headers["Authorization"].ToString();
+                if (authHeader.StartsWith("Bearer ", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    var token = authHeader.Substring("Bearer ".Length).Trim();
+                    // Basic validation - check if it's not empty and looks like a JWT token (has dots)
+                    return !string.IsNullOrEmpty(token) && token.Contains('.');
+                }
+            }
+            return false;
         }
     }
 }
