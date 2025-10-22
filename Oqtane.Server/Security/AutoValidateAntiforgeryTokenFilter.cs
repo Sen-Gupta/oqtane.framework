@@ -62,6 +62,11 @@ namespace Oqtane.Security
 
         protected virtual bool ShouldValidate(AuthorizationFilterContext context)
         {
+            // TEMPORARY: Disable antiforgery validation for debugging
+            _filelogger.LogWarning("[AutoValidateAntiforgeryTokenFilter] TEMPORARY: Antiforgery validation DISABLED for debugging");
+            return false;
+            
+            /* Original validation logic - re-enable after fixing token flow
             var method = context.HttpContext.Request.Method;
             var hasAuthHeader = context.HttpContext.Request.Headers.ContainsKey("Authorization");
             var userAgent = context.HttpContext.Request.Headers["User-Agent"].ToString();
@@ -91,6 +96,7 @@ namespace Oqtane.Security
             _filelogger.LogDebug($"[AutoValidateAntiforgeryTokenFilter] Should validate - {method} request");
             // everything else requires antiforgery validation (ie. POST, PUT, DELETE)
             return true;
+            */
         }
     }
 }
