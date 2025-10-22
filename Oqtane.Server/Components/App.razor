@@ -8,6 +8,7 @@
 @using Microsoft.Net.Http.Headers
 @using Microsoft.Extensions.Primitives
 @using Microsoft.AspNetCore.Authentication
+@using Microsoft.Extensions.Logging
 @using Oqtane.Client
 @using Oqtane.UI
 @using Oqtane.Repository
@@ -132,7 +133,7 @@
         // Debug logging for antiforgery token generation
         if (!string.IsNullOrEmpty(_antiForgeryToken))
         {
-            Logger.Warning("[App.razor] Generated AntiForgeryToken: {TokenPrefix}... (length: {Length})", 
+            Logger.LogWarning("[App.razor] Generated AntiForgeryToken: {TokenPrefix}... (length: {Length})", 
                 _antiForgeryToken.Substring(0, Math.Min(10, _antiForgeryToken.Length)), 
                 _antiForgeryToken.Length);
         }
