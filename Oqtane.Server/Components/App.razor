@@ -34,6 +34,7 @@
 @inject IJwtManager JwtManager
 @inject ICookieConsentService CookieConsentService
 @inject ISettingService SettingService
+@inject ILogger<App> Logger
 
 @if (_initialized)
 {
@@ -127,6 +128,18 @@
         _antiForgeryToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
         _remoteIPAddress = Context.Connection.RemoteIpAddress?.ToString() ?? "";
         _platform = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
+
+        // Debug logging for antiforgery token generation
+        if (!string.IsNullOrEmpty(_antiForgeryToken))
+        {
+            Logger.Warning("[App.razor] Generated AntiForgeryToken: {TokenPrefix}... (length: {Length})", 
+                _antiForgeryToken.Substring(0, Math.Min(10, _antiForgeryToken.Length)), 
+                _antiForgeryToken.Length);
+        }
+        else
+        {
+            Logger.LogWarning("[App.razor] WARNING: Failed to generate AntiForgeryToken!");
+        }
 
         // if framework is installed
         if (ConfigManager.IsInstalled())
