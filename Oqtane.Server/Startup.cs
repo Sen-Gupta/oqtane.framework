@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -208,6 +209,28 @@ namespace Oqtane
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // Debug middleware to log request headers (especially antiforgery header)
+            app.Use(async (context, next) =>
+            {
+                var logger = context.RequestServices.GetRequiredService<ILogger<Startup>>();
+                if (context.Request.Method == "POST")
+                {
+                    logger.LogDebug("[HeaderDebug] POST {Path}", context.Request.Path);
+                    logger.LogDebug("[HeaderDebug] Has X-XSRF-TOKEN-HEADER: {HasHeader}", 
+                        context.Request.Headers.ContainsKey("X-XSRF-TOKEN-HEADER"));
+                    
+                    if (context.Request.Headers.TryGetValue("X-XSRF-TOKEN-HEADER", out var headerValue))
+                    {
+                        logger.LogDebug("[HeaderDebug] X-XSRF-TOKEN-HEADER value: {Value}", headerValue.ToString());
+                    }
+                    
+                    // Log all headers for debugging
+                    logger.LogDebug("[HeaderDebug] All headers: {Headers}", 
+                        string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}={h.Value}")));
+                }
+                await next();
+            });
 
             // allow oqtane localization middleware
             app.UseOqtaneLocalization();
