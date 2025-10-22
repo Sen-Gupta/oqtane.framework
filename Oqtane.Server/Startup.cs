@@ -65,6 +65,19 @@ namespace Oqtane
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                
+                // Trust all Docker bridge networks (172.16.0.0 - 172.31.255.255)
+                // Docker uses various subnets: 172.17.x.x (default), 172.18.x.x, 172.20.x.x, etc.
+                options.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(
+                    System.Net.IPAddress.Parse("172.16.0.0"), 12));
+                
+                // Trust loopback (nginx on same host)
+                options.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(
+                    System.Net.IPAddress.Loopback, 8));
+                
+                // Trust private class A network (10.0.0.0/8) - for some Docker setups
+                options.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(
+                    System.Net.IPAddress.Parse("10.0.0.0"), 8));
             });
 
             // register localization services
